@@ -86,7 +86,8 @@ namespace LLEmployees.Controllers
 
             _context.Employees.Remove(emp);
             _context.SaveChanges();
-            return new NoContentResult();
+            //return new NoContentResult();
+            return StatusCode(200);
         }
 
     }
