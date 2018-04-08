@@ -38,5 +38,19 @@ namespace LLEmployees.Controllers
             return new ObjectResult(item);
         }
 
+        [HttpPost]
+        public IActionResult Create([FromBody] Employee item)
+        {
+            if (item == null)
+            {
+                return BadRequest();
+            }
+
+            _context.Employees.Add(item);
+            _context.SaveChanges();
+
+            return CreatedAtRoute("GetEmployee", new { id = item.Id }, item);
+        }
+
     }
 }
