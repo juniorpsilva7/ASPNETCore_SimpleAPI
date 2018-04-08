@@ -52,5 +52,28 @@ namespace LLEmployees.Controllers
             return CreatedAtRoute("GetEmployee", new { id = item.Id }, item);
         }
 
+        [HttpPut("{id}")]
+        public IActionResult Update(long id, [FromBody] Employee item)
+        {
+            if (item == null || item.Id != id)
+            {
+                return BadRequest();
+            }
+
+            var emp = _context.Employees.FirstOrDefault(t => t.Id == id);
+            if (emp == null)
+            {
+                return NotFound();
+            }
+
+            emp.Name = item.Name;
+            emp.Email = item.Email;
+            emp.Department = item.Department;
+
+            _context.Employees.Update(emp);
+            _context.SaveChanges();
+            return new NoContentResult();
+        }
+
     }
 }
