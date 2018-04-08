@@ -75,5 +75,19 @@ namespace LLEmployees.Controllers
             return new NoContentResult();
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult Delete(long id)
+        {
+            var emp = _context.Employees.FirstOrDefault(t => t.Id == id);
+            if (emp == null)
+            {
+                return NotFound();
+            }
+
+            _context.Employees.Remove(emp);
+            _context.SaveChanges();
+            return new NoContentResult();
+        }
+
     }
 }
