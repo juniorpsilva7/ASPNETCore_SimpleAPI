@@ -14,11 +14,11 @@ namespace LLEmployees.Controllers
         {
             _context = context;
 
-            if (_context.Employees.Count() == 0)
-            {
-                _context.Employees.Add(new Employee { Name = "Employee1" , Email = "asd@asd.com" , Department = "Dep Teste"});
-                _context.SaveChanges();
-            }
+            //if (_context.Employees.Count() == 0)
+            //{
+            //    _context.Employees.Add(new Employee { Name = "Employee1" , Email = "asd@asd.com" , Department = "Dep Teste"});
+            //    _context.SaveChanges();
+            //}
         }
 
         [HttpGet]
