@@ -22,10 +22,14 @@ namespace LLEmployees.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Employee> GetAll()
+        public IEnumerable<Employee> GetAll(int page_size, int page)
         {
-            return _context.Employees.ToList();
+            //return _context.Employees.ToList();
+            return _context.Employees.Skip((page - 1) * page_size).Take(page_size).ToList();
         }
+
+
+
 
         [HttpGet("{id}", Name = "GetEmployee")]
         public IActionResult GetById(long id)
