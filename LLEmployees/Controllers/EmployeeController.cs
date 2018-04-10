@@ -57,7 +57,7 @@ namespace LLEmployees.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(long id, [FromBody] Employee item)
+        public IActionResult Update([FromBody] Employee item, long id)
         {
             if (item == null || item.Id != id)
             {
