@@ -27,7 +27,7 @@ namespace LLEmployees.Controllers
         public IActionResult GetById(long id)
         {
             var item = _employeeRepository.GetById(id);
-            //var item = _context.Employees.FirstOrDefault(t => t.Id == id);
+
             if (item == null)
             {
                 return NotFound();
