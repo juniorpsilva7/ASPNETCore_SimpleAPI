@@ -2,39 +2,32 @@
 using Microsoft.AspNetCore.Mvc;
 using LLEmployees.Models;
 using System.Linq;
+using LLEmployees.Repository;
 
 namespace LLEmployees.Controllers
 {
     [Route("api/[controller]")]
     public class EmployeeController : Controller
     {
-        private readonly EmployeeContext _context;
 
-        public EmployeeController(EmployeeContext context)
+        private readonly IEmployeeRepository _employeeRepository;
+
+        public EmployeeController(IEmployeeRepository employeeRepo)
         {
-            _context = context;
-
-            //if (_context.Employees.Count() == 0)
-            //{
-            //    _context.Employees.Add(new Employee { Name = "Employee1" , Email = "asd@asd.com" , Department = "Dep Teste"});
-            //    _context.SaveChanges();
-            //}
+            _employeeRepository = employeeRepo;
         }
 
         [HttpGet]
         public IEnumerable<Employee> GetAll(int page_size, int page)
         {
-            //return _context.Employees.ToList();
-            return _context.Employees.Skip((page - 1) * page_size).Take(page_size).ToList();
+            return _employeeRepository.GetAll(page_size, page);
         }
-
-
-
 
         [HttpGet("{id}", Name = "GetEmployee")]
         public IActionResult GetById(long id)
         {
-            var item = _context.Employees.FirstOrDefault(t => t.Id == id);
+            var item = _employeeRepository.GetById(id);
+            //var item = _context.Employees.FirstOrDefault(t => t.Id == id);
             if (item == null)
             {
                 return NotFound();
@@ -50,9 +43,7 @@ namespace LLEmployees.Controllers
                 return BadRequest();
             }
 
-            _context.Employees.Add(item);
-            _context.SaveChanges();
-
+            _employeeRepository.Create(item);
             return CreatedAtRoute("GetEmployee", new { id = item.Id }, item);
         }
 
@@ -64,7 +55,7 @@ namespace LLEmployees.Controllers
                 return BadRequest();
             }
 
-            var emp = _context.Employees.FirstOrDefault(t => t.Id == id);
+            var emp = _employeeRepository.GetById(id);
             if (emp == null)
             {
                 return NotFound();
@@ -74,23 +65,20 @@ namespace LLEmployees.Controllers
             emp.Email = item.Email;
             emp.Department = item.Department;
 
-            _context.Employees.Update(emp);
-            _context.SaveChanges();
+            _employeeRepository.Update(emp, item.Id);
             return new NoContentResult();
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            var emp = _context.Employees.FirstOrDefault(t => t.Id == id);
+            var emp = _employeeRepository.GetById(id);
             if (emp == null)
             {
                 return NotFound();
             }
 
-            _context.Employees.Remove(emp);
-            _context.SaveChanges();
-            //return new NoContentResult();
+            _employeeRepository.Delete(id);
             return StatusCode(200);
         }
 
