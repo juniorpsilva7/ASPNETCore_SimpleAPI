@@ -1,5 +1,5 @@
 # ASPNETCore_SimpleAPI
-A simple API of a employees informations CRUD
+A simple API of an employees informations CRUD
 
 How to start:
 
